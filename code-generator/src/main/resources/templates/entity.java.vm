@@ -1,0 +1,30 @@
+package ${config.basePackage}.${config.modulePackage}.entity;
+
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
+    #foreach( $clazz in $tableInfo.importClassSet)
+import $clazz;
+    #end
+import java.io.Serializable;
+
+/**
+ *${tableInfo.tableComment}
+ *@author ${config.author}
+ *@date ${config.date}
+ */
+@Data
+@TableName("${config.tableName}")
+public class ${config.entityName}Entity {
+
+#foreach( $field in $tableInfo.fieldInfoList)
+    /**
+    * ${field.fieldComment}
+    */
+    #if(${field.primary})
+    @TableId
+    #end
+    private ${field.javaType} ${field.javaFieldName};
+#end
+
+}

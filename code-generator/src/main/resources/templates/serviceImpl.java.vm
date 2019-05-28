@@ -1,0 +1,75 @@
+package ${config.basePackage}.${config.modulePackage}.service.impl;
+
+
+import ${config.basePackage}.${config.modulePackage}.dto.${config.entityName}Dto;
+import ${config.basePackage}.${config.modulePackage}.entity.${config.entityName}Entity;
+import ${config.basePackage}.${config.modulePackage}.dao.${config.entityName}Dao;
+import ${config.basePackage}.${config.modulePackage}.service.${config.entityName}Service;
+import com.alibaba.dubbo.config.annotation.Service;
+import com.example.util.common.CopyUtils;
+import com.example.util.kit.SnowFlake;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.List;
+import java.util.Map;
+import java.io.Serializable;
+/**
+ *
+ * @author ${config.author}
+ * @date ${config.date}
+ */
+@Service
+public class ${config.entityName}ServiceImpl implements ${config.entityName}Service{
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(${config.entityName}Service.class);
+
+    @Autowired
+    private ${config.entityName}Dao ${config.entityVarName}Dao;
+
+
+    @Override
+    public List<${config.entityName}Dto> queryList(Map<String,Object> params){
+        List<${config.entityName}Entity> list = ${config.entityVarName}Dao.queryList(params);
+        return CopyUtils.copyList(list,${config.entityName}Dto.class);
+    }
+
+    @Override
+    public int queryTotal(Map<String, Object> params){
+        return ${config.entityVarName}Dao.queryTotal(params);
+    }
+
+    @Override
+    public Long save(${config.entityName}Dto dto){
+        ${config.entityName}Entity entity = CopyUtils.copyObj(dto,${config.entityName}Entity.class);
+        entity.setId(SnowFlake.nextId());
+        ${config.entityVarName}Dao.insert(entity);
+        return entity.getId();
+    }
+
+    @Override
+    public void updateById(${config.entityName}Dto dto){
+        ${config.entityName}Entity entity = CopyUtils.copyObj(dto,${config.entityName}Entity.class);
+        ${config.entityVarName}Dao.updateById(entity);
+    }
+
+    @Override
+    public ${config.entityName}Dto selectById(Serializable id){
+        ${config.entityName}Entity entity = ${config.entityVarName}Dao.selectById(id);
+        return CopyUtils.copyObj(entity,${config.entityName}Dto.class);
+    }
+
+    @Override
+    public void deleteById(Serializable id){
+        ${config.entityVarName}Dao.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteBatch(Serializable[] ids){
+        for (Serializable id : ids) {
+            deleteById(id);
+        }
+    }
+}

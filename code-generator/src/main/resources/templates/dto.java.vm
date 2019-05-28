@@ -1,0 +1,24 @@
+package ${config.basePackage}.${config.modulePackage}.dto;
+
+import lombok.Data;
+    #foreach( $clazz in $tableInfo.importClassSet)
+import $clazz;
+    #end
+import java.io.Serializable;
+
+/**
+ *${tableInfo.tableComment}
+ *@author ${config.author}
+ *@date ${config.date}
+ */
+@Data
+public class ${config.entityName}Dto implements Serializable {
+
+#foreach( $field in $tableInfo.fieldInfoList)
+    /**
+    * ${field.fieldComment}
+    */
+    private ${field.javaType} ${field.javaFieldName};
+#end
+
+}

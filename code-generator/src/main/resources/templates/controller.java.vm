@@ -1,0 +1,99 @@
+package ${config.basePackage}.${config.modulePackage}.controller;
+
+
+import ${config.basePackage}.${config.modulePackage}.service.${config.entityName}Service;
+import ${config.basePackage}.${config.modulePackage}.dto.${config.entityName}Dto;
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.example.BaseController;
+import com.example.util.annotation.RequirePermissions;
+import com.example.util.common.Page;
+import com.example.util.common.Request;
+import com.example.util.common.Response;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author ${config.author}
+ * @date ${config.date}
+ */
+@RestController
+@RequestMapping("${config.entityVarName}")
+public class ${config.entityName}Controller extends BaseController {
+
+    @Reference
+    private ${config.entityName}Service ${config.entityVarName}Service;
+
+    /**
+	 * 列表
+	 */
+    @GetMapping("list")
+    @RequirePermissions(values ="${config.entityVarName}:list")
+    public Response<Page<${config.entityName}Dto>> list(@RequestParam Map<String, Object> params){
+        //查询列表数据
+        Request request = Request.configParams(params);
+
+        List<${config.entityName}Dto> list = ${config.entityVarName}Service.queryList(params);
+        int total = ${config.entityVarName}Service.queryTotal(params);
+
+        Page<${config.entityName}Dto> page = new Page<${config.entityName}Dto>(request.getPageNo(), request.getPageNo(), total, list);
+
+        return Response.ok().wrap(page);
+    }
+
+
+    /**
+     * 信息
+     */
+    @GetMapping("info/{id}")
+    @RequirePermissions(values ="${config.entityVarName}:info")
+    public Response<${config.entityName}Dto> info(@PathVariable("id") Long id){
+
+        ${config.entityName}Dto ${config.entityVarName}Dto = ${config.entityVarName}Service.selectById(id);
+
+        return Response.ok().wrap(${config.entityVarName}Dto);
+    }
+
+    /**
+     * 保存
+     */
+    @PostMapping("save")
+    @RequirePermissions(values ="${config.entityVarName}:edit")
+    public Response save(@RequestBody ${config.entityName}Dto ${config.entityVarName}Dto){
+
+        fillSaveCommonData(${config.entityVarName}Dto);
+
+        ${config.entityVarName}Service.save(${config.entityVarName}Dto);
+
+        return Response.ok();
+    }
+
+    /**
+     * 修改
+     */
+    @PostMapping("update")
+    @RequirePermissions(values ="${config.entityVarName}:edit")
+    public Response update(@RequestBody ${config.entityName}Dto ${config.entityVarName}Dto){
+
+        fillEditCommonData(${config.entityVarName}Dto);
+
+        ${config.entityVarName}Service.updateById(${config.entityVarName}Dto);
+
+        return Response.ok();
+    }
+
+    /**
+	 * 删除
+	 */
+    @PostMapping("delete")
+    @RequirePermissions(values ="${config.entityVarName}:delete")
+    public Response delete(@RequestBody Long[] ids){
+
+        ${config.entityVarName}Service.deleteBatch(ids);
+
+        return Response.ok();
+    }
+}

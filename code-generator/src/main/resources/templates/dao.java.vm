@@ -1,0 +1,24 @@
+package ${config.basePackage}.${config.modulePackage}.dao;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import ${config.basePackage}.${config.modulePackage}.entity.${config.entityName}Entity;
+import org.apache.ibatis.annotations.Mapper;
+import java.util.List;
+import java.util.Map;
+/**
+ *
+ * @author ${config.author}
+ *@date ${config.date}
+ */
+@Mapper
+public interface ${config.entityName}Dao extends BaseMapper<${config.entityName}Entity> {
+    /**
+   * 查询列表
+   */
+    List<${config.entityName}Entity> queryList(Map<String,Object> params);
+
+    /**
+   * 查询数量
+   */
+    int queryTotal(Map<String, Object> params);
+}

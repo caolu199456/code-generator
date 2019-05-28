@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<link rel="stylesheet" href="../../statics/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../../statics/css/font-awesome.min.css">
+	<link rel="stylesheet" href="../../statics/plugins/jqgrid/ui.jqgrid-bootstrap.css">
+	<link rel="stylesheet" href="../../statics/plugins/ztree/css/metroStyle/metroStyle.css">
+	<link rel="stylesheet" href="../../statics/css/main.css">
+	<link rel="stylesheet" href="../../statics/plugins/layui/css/layui.css">
+	<div v-show="showList">
+		<div class="form-group col-sm-2">
+		 	<input class="form-control" v-model="q." @keyup.enter="query" placeholder="名称">
+		</div>
+		
+		<div class="grid-btn">
+			<button class="layui-btn" id="searchSubmit" @click="query"><i class="layui-icon">&#xe615;</i>查 询</button>
+            <button class="layui-btn" @click="add" type="button" v-if="hasPermissions('${config.entityVarName}:save')"><i class="layui-icon">&#xe61f;</i> 新 增</button>
+            <button class="layui-btn layui-btn-normal" type="button" @click="update" v-if="hasPermissions('${config.entityVarName}:update')" ><i class="layui-icon">&#xe642;</i>编辑</button>
+            <button class="layui-btn layui-btn-danger" type="button" @click="del" v-if="hasPermissions('${config.entityVarName}:delete')"><i class="layui-icon">&#xe640;</i>删除</button>
+		</div>
+		
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+    
+    <div v-show="!showList" class="panel panel-default">
+		<div class="panel-heading">{{title}}</div>
+		<form class="form-horizontal">
+
+			#foreach( $field in $tableInfo.fieldInfoList)
+				<div class="form-group">
+					<div class="col-sm-2 control-label">${field.fieldComment}</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" v-model="${config.entityVarName}.${field.javaFieldName}" placeholder="${field.fieldComment}"/>
+					</div>
+				</div>
+
+			#end
+
+
+			<div class="form-group">
+				<div class="col-sm-2 control-label"></div>
+                <button class="layui-btn" type="button" @click="saveOrUpdate" >保存</button>
+                <button class="layui-btn layui-btn-warm" type="button" @click="reload" style="margin-left: 30px">返回</button>
+			</div>
+									
+		 </div>
+							
+		</form>
+	</div>
+</div>
+<script src="../../statics/js/jquery.min.js"></script>
+<script src="../../statics/plugins/layer/layer.js"></script>
+<script src="../../statics/plugins/layui/layui.js"></script>
+<script src="../../statics/js/bootstrap.min.js"></script>
+<script src="../../statics/js/vue.min.js"></script>
+<script src="../../statics/js/vue-validator.min.js"></script>
+<script src="../../statics/plugins/jqgrid/grid.locale-cn.js"></script>
+<script src="../../statics/plugins/jqgrid/jquery.jqGrid.min.js"></script>
+<script src="../../statics/plugins/ztree/jquery.ztree.all.min.js"></script>
+<script src="../../statics/js/common.js"></script>
+<script src="../../statics/plugins/layer/mylayer.js"></script>
+<script src="../../statics/js/xlsx.core.min.js"></script>
+<link rel="stylesheet" href="../../statics/css/style.css">
+<script src="../../statics/js/config.js"></script>
+<script src="../../statics/js/${config.modulePackage}/${config.entityVarName}.js"></script>
+</body>
+</html>
